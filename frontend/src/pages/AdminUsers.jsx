@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllUsersAPI, toggleUserStatusAPI, deleteUserAPI } from '../api';
+import { getAllUsersAPI, toggleUserStatusAPI, deleteUserAPI, resetDatabaseAPI } from '../api';
 import { Users, Search, Shield, Ban, CheckCircle, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -7,6 +7,9 @@ const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [confirmText, setConfirmText] = useState('');
+  const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -46,6 +49,26 @@ const AdminUsers = () => {
     }
   };
 
+  const handleResetSystem = async () => {
+    if (confirmText !== 'delete') {
+      toast.error("Please type 'delete' to confirm");
+      return;
+    }
+
+    setResetting(true);
+    try {
+      await resetDatabaseAPI();
+      toast.success('Database has been reset successfully!');
+      setShowResetModal(false);
+      setConfirmText('');
+      fetchUsers();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to reset database');
+    } finally {
+      setResetting(false);
+    }
+  };
+
   const filteredUsers = users.filter(user => 
     user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -61,6 +84,13 @@ const AdminUsers = () => {
           <h1 className="page-title">User Management</h1>
           <p className="page-subtitle">View and manage all registered users</p>
         </div>
+        <button 
+          className="btn btn-danger" 
+          onClick={() => setShowResetModal(true)}
+          style={{ background: 'var(--danger)', borderColor: 'var(--danger)' }}
+        >
+          <Trash2 size={16} /> Reset System
+        </button>
       </div>
 
       <div className="card">
@@ -152,6 +182,60 @@ const AdminUsers = () => {
           )}
         </div>
       </div>
+
+      {/* Reset Confirmation Modal */}
+      {showResetModal && (
+        <div className="modal-overlay" onClick={() => {
+          setShowResetModal(false);
+          setConfirmText('');
+        }}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">
+              <Trash2 size={20} /> Reset Everything?
+            </h2>
+            <p className="modal-description">
+              Are you sure? This will delete all users (except you), accounts, loans, and transactions permanently. This action cannot be undone.
+            </p>
+            <div className="form-group" style={{ marginBottom: '16px' }}>
+              <label className="form-label" style={{ color: 'var(--danger)', fontSize: '0.8rem', fontWeight: 600 }}>
+                Type "delete" to confirm:
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                style={{ width: '100%', border: '1px solid rgba(239, 68, 68, 0.4)', borderRadius: '8px', padding: '10px', marginTop: '6px' }}
+                placeholder="delete"
+                value={confirmText}
+                onChange={(e) => setConfirmText(e.target.value)}
+              />
+            </div>
+            <div className="modal-actions">
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  setShowResetModal(false);
+                  setConfirmText('');
+                }}
+                disabled={resetting}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-danger"
+                style={{ 
+                  background: confirmText === 'delete' ? 'var(--danger)' : 'rgba(239, 68, 68, 0.2)', 
+                  borderColor: 'transparent',
+                  color: confirmText === 'delete' ? 'white' : 'var(--dark-400)'
+                }}
+                onClick={handleResetSystem}
+                disabled={confirmText !== 'delete' || resetting}
+              >
+                {resetting ? 'Resetting...' : 'Confirm Reset'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

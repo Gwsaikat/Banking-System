@@ -60,5 +60,6 @@ export const deleteUserAPI = (id) => API.delete(`/admin/users/${id}`);
 export const getAllLoansAPI = (params) => API.get('/loans/admin/all', { params });
 export const approveLoanAPI = (id) => API.put(`/loans/${id}/approve`);
 export const rejectLoanAPI = (id, data) => API.put(`/loans/${id}/reject`, data);
+export const resetDatabaseAPI = () => API.post('/admin/reset');
 
 export default API;

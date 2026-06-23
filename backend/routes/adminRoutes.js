@@ -6,6 +6,7 @@ const {
   getDashboardStats,
   toggleUserStatus,
   deleteUser,
+  resetDatabase,
 } = require("../controllers/adminController");
 const { protect, adminOnly } = require("../middlewares/authMiddleware");
 
@@ -16,5 +17,6 @@ router.get("/transactions", getAllTransactions);
 router.get("/stats", getDashboardStats);
 router.put("/users/:id/toggle", toggleUserStatus);
 router.delete("/users/:id", deleteUser);
+router.post("/reset", resetDatabase);
 
 module.exports = router;

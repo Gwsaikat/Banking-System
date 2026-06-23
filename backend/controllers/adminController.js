@@ -166,4 +166,29 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getAllTransactions, getDashboardStats, toggleUserStatus, deleteUser };
+/**
+ * @desc    Reset database (delete all transactions, loans, accounts, and non-admin users)
+ * @route   POST /api/admin/reset
+ * @access  Admin
+ */
+const resetDatabase = async (req, res) => {
+  try {
+    // Delete all transactions
+    await Transaction.deleteMany({});
+    
+    // Delete all loans
+    await Loan.deleteMany({});
+    
+    // Delete all accounts
+    await Account.deleteMany({});
+    
+    // Delete all users except the current admin
+    await User.deleteMany({ _id: { $ne: req.user._id } });
+
+    res.json({ message: "Database reset completed successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { getAllUsers, getAllTransactions, getDashboardStats, toggleUserStatus, deleteUser, resetDatabase };
