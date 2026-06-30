@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { getAllTransactionsAPI } from '../api';
-import { BarChart3, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const AdminTransactions = () => {
@@ -58,15 +57,15 @@ const AdminTransactions = () => {
                 <tbody>
                   {transactions.map(txn => (
                     <tr key={txn._id}>
-                      <td>
+                      <td data-label="Type">
                         <span className={`badge ${txn.type === 'deposit' ? 'success' : txn.type === 'withdrawal' ? 'danger' : 'info'}`}>
                           {txn.type}
                         </span>
                       </td>
-                      <td className={`txn-amount ${txn.type === 'deposit' ? 'positive' : 'negative'}`}>
+                      <td data-label="Amount" className={`txn-amount ${txn.type === 'deposit' ? 'positive' : 'negative'}`}>
                         {txn.type === 'deposit' ? '+' : '-'}{formatCurrency(txn.amount)}
                       </td>
-                      <td>
+                      <td data-label="User">
                         {txn.account?.user ? (
                           <>
                             <div style={{ fontWeight: 500 }}>{txn.account.user.firstName} {txn.account.user.lastName}</div>
@@ -74,9 +73,9 @@ const AdminTransactions = () => {
                           </>
                         ) : 'System'}
                       </td>
-                      <td style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{txn.account?.accountNumber || '—'}</td>
-                      <td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--dark-500)' }}>{txn.referenceId}</td>
-                      <td>{new Date(txn.createdAt).toLocaleString()}</td>
+                      <td data-label="Account" style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{txn.account?.accountNumber || '—'}</td>
+                      <td data-label="Reference" style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--dark-500)' }}>{txn.referenceId}</td>
+                      <td data-label="Date">{new Date(txn.createdAt).toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
