@@ -32,3 +32,6 @@ out/
 
 # Local Render CLI binary (not part of the app)
 .render-cli/
+
+.vercel
+.env*

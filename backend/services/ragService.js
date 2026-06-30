@@ -3,7 +3,6 @@ const { RecursiveCharacterTextSplitter } = require("@langchain/textsplitters");
 const DocumentModel = require("../models/document");
 const Transaction = require("../models/transaction");
 const Account = require("../models/account");
-const pdfParse = require("pdf-parse");
 
 const getEmbeddings = () => new GoogleGenerativeAIEmbeddings({
   apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
@@ -12,6 +11,7 @@ const getEmbeddings = () => new GoogleGenerativeAIEmbeddings({
 
 const processAndStoreDocument = async (fileBuffer, fileName, userId) => {
   try {
+    const pdfParse = require("pdf-parse");
     const pdfData = await pdfParse(fileBuffer);
     const text = pdfData.text;
 
