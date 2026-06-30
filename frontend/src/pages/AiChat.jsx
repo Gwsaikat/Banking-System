@@ -37,7 +37,7 @@ const AiChat = () => {
       const res = await askAiAPI({ message: text });
       const aiMessage = { role: 'ai', content: res.data.reply };
       setMessages((prev) => [...prev, aiMessage]);
-    } catch (error) {
+    } catch {
       const errorMessage = { role: 'ai', content: 'Sorry, I encountered an error. Please try again.' };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {

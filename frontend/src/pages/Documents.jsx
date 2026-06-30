@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { uploadDocumentAPI, queryDocumentsAPI } from '../api';
-import { Upload, Search, FileText, Sparkles, Loader2, CheckCircle, AlertCircle, X, File } from 'lucide-react';
+import { Upload, Search, FileText, Sparkles, Loader2, CheckCircle, X, File } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Documents = () => {
