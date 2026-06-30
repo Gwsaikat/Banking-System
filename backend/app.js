@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 
 // Route imports
@@ -31,6 +33,20 @@ app.use("/api/loans", loanRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/documents", documentRoutes);
+
+// Serve built frontend (unified deployment)
+const frontendDist = path.join(__dirname, "..", "frontend", "dist");
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+
+  // SPA fallback — React Router client-side routes
+  app.get(/^(?!\/api\/).*/, (req, res, next) => {
+    if (req.method !== "GET") return next();
+    res.sendFile(path.join(frontendDist, "index.html"), (err) => {
+      if (err) next(err);
+    });
+  });
+}
 
 // Error handling
 app.use(notFound);
