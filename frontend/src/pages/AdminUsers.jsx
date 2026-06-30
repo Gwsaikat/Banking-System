@@ -123,7 +123,7 @@ const AdminUsers = () => {
             <tbody>
               {filteredUsers.map(user => (
                 <tr key={user._id}>
-                  <td>
+                  <td data-label="User">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div className="sidebar-avatar" style={{ width: '32px', height: '32px', fontSize: '0.75rem' }}>
                         {user.firstName[0]}{user.lastName[0]}
@@ -133,23 +133,23 @@ const AdminUsers = () => {
                       </div>
                     </div>
                   </td>
-                  <td>
+                  <td data-label="Contact">
                     <div style={{ fontSize: '0.85rem' }}>{user.email}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--dark-500)' }}>{user.phone || 'No phone'}</div>
                   </td>
-                  <td>
+                  <td data-label="Role">
                     <span className={`badge ${user.role === 'admin' ? 'info' : 'neutral'}`}>
                       {user.role === 'admin' && <Shield size={12} style={{ marginRight: '4px' }} />}
                       {user.role}
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span className={`badge ${user.isActive ? 'success' : 'danger'}`}>
                       {user.isActive ? 'Active' : 'Deactivated'}
                     </span>
                   </td>
-                  <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                  <td>
+                  <td data-label="Joined">{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td data-label="Actions">
                     {user.role !== 'admin' && (
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <button 

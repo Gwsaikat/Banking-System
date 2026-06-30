@@ -87,22 +87,22 @@ const AdminLoans = () => {
               <tbody>
                 {loans.map(loan => (
                   <tr key={loan._id}>
-                    <td>
+                    <td data-label="User">
                       <div style={{ fontWeight: 500 }}>{loan.user?.firstName} {loan.user?.lastName}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--dark-500)' }}>{loan.user?.email}</div>
                     </td>
-                    <td style={{ fontWeight: 600 }}>{formatCurrency(loan.amount)}</td>
-                    <td>
+                    <td data-label="Amount" style={{ fontWeight: 600 }}>{formatCurrency(loan.amount)}</td>
+                    <td data-label="Term & Rate">
                       <div>{loan.termMonths} mos</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--dark-500)' }}>{loan.interestRate}% APR</div>
                     </td>
-                    <td style={{ maxWidth: '200px' }} className="text-truncate">{loan.purpose}</td>
-                    <td>
+                    <td data-label="Purpose" style={{ maxWidth: '200px' }} className="text-truncate">{loan.purpose}</td>
+                    <td data-label="Status">
                       <span className={`badge ${loan.status === 'pending' ? 'warning' : loan.status === 'approved' ? 'success' : loan.status === 'rejected' ? 'danger' : 'neutral'}`}>
                         {loan.status}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       {loan.status === 'pending' && (
                         <div style={{ display: 'flex', gap: '8px' }}>
                           <button className="btn btn-sm btn-success" onClick={() => handleApprove(loan._id)} title="Approve">

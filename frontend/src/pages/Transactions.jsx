@@ -201,24 +201,24 @@ const Transactions = () => {
                 <tbody>
                   {transactions.map((txn) => (
                     <tr key={txn._id}>
-                      <td>
+                      <td data-label="Type">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <div className={`txn-icon ${txn.type}`}>{getTxnIcon(txn.type)}</div>
                           <span style={{ textTransform: 'capitalize' }}>{txn.type}</span>
                         </div>
                       </td>
-                      <td>{txn.description || '—'}</td>
-                      <td style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                      <td data-label="Description">{txn.description || '—'}</td>
+                      <td data-label="Account" style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
                         {txn.account?.accountNumber || '—'}
                       </td>
-                      <td className={`txn-amount ${txn.type === 'deposit' ? 'positive' : 'negative'}`}>
+                      <td data-label="Amount" className={`txn-amount ${txn.type === 'deposit' ? 'positive' : 'negative'}`}>
                         {txn.type === 'deposit' ? '+' : '-'}{formatCurrency(txn.amount)}
                       </td>
-                      <td>{formatCurrency(txn.balanceAfter)}</td>
-                      <td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--dark-500)' }}>
+                      <td data-label="Balance After">{formatCurrency(txn.balanceAfter)}</td>
+                      <td data-label="Reference" style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--dark-500)' }}>
                         {txn.referenceId}
                       </td>
-                      <td>{formatDate(txn.createdAt)}</td>
+                      <td data-label="Date">{formatDate(txn.createdAt)}</td>
                     </tr>
                   ))}
                 </tbody>

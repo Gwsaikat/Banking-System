@@ -2195,3 +2195,135 @@ select.form-input option {
 }
 
 
+
+/* Mobile-first fixes for admin tables, transaction history, documents, and modals */
+@media (max-width: 768px) {
+  .table-container {
+    margin: 0;
+    padding: 0;
+    overflow-x: visible;
+  }
+
+  .table-container .table,
+  .table-container .table thead,
+  .table-container .table tbody,
+  .table-container .table tr,
+  .table-container .table th,
+  .table-container .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table-container .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .table-container .table tr {
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  .table-container .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  .table-container .table td:last-child {
+    border-bottom: 0;
+  }
+
+  .table-container .table td::before {
+    content: attr(data-label);
+    min-width: 110px;
+    color: var(--dark-400);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .table-container .table td[data-label="Actions"] > div {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .modal,
+  .modal-content {
+    width: min(100%, 520px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .documents-page {
+    padding: 0;
+  }
+
+  .documents-file-preview,
+  .documents-upload-result,
+  .documents-result-header {
+    flex-wrap: wrap;
+  }
+
+  .documents-file-name {
+    max-width: min(100%, 220px);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .documents-result-score {
+    margin-left: 0;
+  }
+
+  .documents-result-text {
+    overflow-wrap: anywhere;
+  }
+
+  .ai-chat-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ai-chat-status {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-container .table td {
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .table-container .table td::before {
+    min-width: 0;
+  }
+
+  .documents-search-wrapper {
+    padding: 4px 12px;
+  }
+}

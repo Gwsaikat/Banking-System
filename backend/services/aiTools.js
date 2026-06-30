@@ -21,6 +21,33 @@ const createAiTools = (userId) => {
     },
   });
 
+  const getAllRecentTransactionsTool = new DynamicStructuredTool({
+    name: "get_all_recent_transactions",
+    description: "Get recent transactions across all of the user's active accounts. Use this when the user asks about recent activity, spending, deposits, transfers, or summaries and has not already provided a specific account ID.",
+    schema: z.object({
+      limit: z.number().optional().describe("Number of transactions to fetch across all accounts (default: 20, max: 50)"),
+    }),
+    func: async ({ limit = 20 }) => {
+      try {
+        const accounts = await Account.find({ user: userId, isActive: true }).select("_id accountNumber accountType");
+        if (accounts.length === 0) return "No active accounts found for this user.";
+
+        const accountIds = accounts.map((account) => account._id);
+        const safeLimit = Math.min(limit, 50);
+        const transactions = await Transaction.find({ account: { $in: accountIds } })
+          .populate("account", "accountNumber accountType")
+          .sort({ createdAt: -1 })
+          .limit(safeLimit)
+          .select("amount type description status createdAt balanceAfter referenceId account");
+
+        if (transactions.length === 0) return "No recent transactions found for this user.";
+        return JSON.stringify(transactions);
+      } catch (error) {
+        return `Error fetching recent transactions: ${error.message}`;
+      }
+    },
+  });
+
   const getTransactionsTool = new DynamicStructuredTool({
     name: "get_recent_transactions",
     description: "Get recent transactions for a specific account. Always use this to answer questions about recent spending, deposits, or transfers.",
@@ -67,7 +94,7 @@ const createAiTools = (userId) => {
     },
   });
 
-  return [getAccountsTool, getTransactionsTool, semanticTransactionSearchTool];
+  return [getAccountsTool, getAllRecentTransactionsTool, getTransactionsTool, semanticTransactionSearchTool];
 };
 
 module.exports = { createAiTools };

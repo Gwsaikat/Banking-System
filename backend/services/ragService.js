@@ -1,12 +1,12 @@
 const { GoogleGenerativeAIEmbeddings } = require("@langchain/google-genai");
-const { MongoDBAtlasVectorSearch } = require("@langchain/mongodb");
 const { RecursiveCharacterTextSplitter } = require("@langchain/textsplitters");
 const DocumentModel = require("../models/document");
 const Transaction = require("../models/transaction");
+const Account = require("../models/account");
 const pdfParse = require("pdf-parse");
 
-const embeddings = new GoogleGenerativeAIEmbeddings({
-  apiKey: process.env.GEMINI_API_KEY,
+const getEmbeddings = () => new GoogleGenerativeAIEmbeddings({
+  apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
   model: "text-embedding-004",
 });
 
@@ -26,7 +26,7 @@ const processAndStoreDocument = async (fileBuffer, fileName, userId) => {
     // We embed manually and save to Mongo to avoid using the underlying driver manually
     let savedCount = 0;
     for (const chunk of chunks) {
-      const vector = await embeddings.embedQuery(chunk.pageContent);
+      const vector = await getEmbeddings().embedQuery(chunk.pageContent);
       await DocumentModel.create({
         user: userId,
         fileName: fileName,
@@ -46,7 +46,7 @@ const processAndStoreDocument = async (fileBuffer, fileName, userId) => {
 const searchDocuments = async (query, userId) => {
   try {
     // Requires an Atlas Vector Search index named "vector_index" on the `documents` collection
-    const vector = await embeddings.embedQuery(query);
+    const vector = await getEmbeddings().embedQuery(query);
     
     const results = await DocumentModel.aggregate([
       {
@@ -80,7 +80,7 @@ const searchDocuments = async (query, userId) => {
 
 const embedTransaction = async (transactionId, text, userId) => {
   try {
-    const vector = await embeddings.embedQuery(text);
+    const vector = await getEmbeddings().embedQuery(text);
     
     // Simply update the existing mongoose document
     await Transaction.findByIdAndUpdate(transactionId, {
@@ -93,7 +93,13 @@ const embedTransaction = async (transactionId, text, userId) => {
 
 const searchSemanticTransactions = async (query, userId) => {
   try {
-    const vector = await embeddings.embedQuery(query);
+    const vector = await getEmbeddings().embedQuery(query);
+    const userAccounts = await Account.find({ user: userId }).select("_id");
+    const userAccountIds = new Set(userAccounts.map((account) => account._id.toString()));
+
+    if (userAccountIds.size === 0) {
+      return [];
+    }
     
     // Requires an Atlas Vector Search index named "txn_vector_index" on the `transactions` collection
     const results = await Transaction.aggregate([
@@ -102,24 +108,26 @@ const searchSemanticTransactions = async (query, userId) => {
           index: "txn_vector_index",
           path: "embedding",
           queryVector: vector,
-          numCandidates: 20,
-          limit: 5
-          // We can't easily filter by user here since 'account' is a ref in the schema, not the user directly.
-          // In a real app, you would denormalize user onto the Transaction model for vector search filtering,
-          // or do a $lookup after the vector search and filter manually.
+          numCandidates: 50,
+          limit: 20
         }
       },
       {
         $project: {
           _id: 1,
+          account: 1,
           amount: 1,
           type: 1,
           description: 1,
+          createdAt: 1,
+          referenceId: 1,
           score: { $meta: "vectorSearchScore" }
         }
       }
     ]);
-    return results;
+    return results
+      .filter((transaction) => userAccountIds.has(transaction.account?.toString()))
+      .slice(0, 5);
   } catch (error) {
     console.error("Error in semantic search:", error);
     return [];
