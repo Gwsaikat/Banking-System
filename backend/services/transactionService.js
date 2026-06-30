@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Account = require("../models/account");
 const Transaction = require("../models/transaction");
+const { embedTransaction } = require("./ragService");
 
 /**
  * Process a deposit
@@ -32,6 +33,11 @@ const deposit = async (accountId, amount, description = "Deposit") => {
     );
 
     await session.commitTransaction();
+    
+    // Embed asynchronously (fire and forget) so it doesn't slow down the response
+    embedTransaction(transaction[0]._id, `Deposit of ${amount}. ${description}`, account.user)
+      .catch((err) => console.error("Embed error (non-blocking):", err.message));
+
     return { transaction: transaction[0], newBalance: account.balance };
   } catch (error) {
     await session.abortTransaction();
@@ -72,6 +78,10 @@ const withdraw = async (accountId, amount, description = "Withdrawal") => {
     );
 
     await session.commitTransaction();
+    
+    embedTransaction(transaction[0]._id, `Withdrawal of ${amount}. ${description}`, account.user)
+      .catch((err) => console.error("Embed error (non-blocking):", err.message));
+
     return { transaction: transaction[0], newBalance: account.balance };
   } catch (error) {
     await session.abortTransaction();
@@ -139,6 +149,10 @@ const transfer = async (fromAccountId, toAccountNumber, amount, description = "T
     );
 
     await session.commitTransaction();
+
+    embedTransaction(debitTxn[0]._id, `Transfer of ${amount} to ${toAccount.accountNumber}. ${description}`, fromAccount.user)
+      .catch((err) => console.error("Embed error (non-blocking):", err.message));
+
     return { transaction: debitTxn[0], newBalance: fromAccount.balance };
   } catch (error) {
     await session.abortTransaction();

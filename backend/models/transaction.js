@@ -42,6 +42,11 @@ const transactionSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    embedding: {
+      type: [Number],
+      default: undefined,
+      select: false,
+    },
   },
   {
     timestamps: true,

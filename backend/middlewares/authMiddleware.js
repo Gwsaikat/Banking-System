@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-/**
- * Protect routes - verify JWT token from Authorization header
- */
+
+// Protect routes - verify JWT token from Authorization header
+
 const protect = async (req, res, next) => {
   let token;
 
@@ -35,9 +35,8 @@ const protect = async (req, res, next) => {
   }
 };
 
-/**
- * Admin only middleware - must be used after protect
- */
+//Admin only middleware - must be used after protect
+
 const adminOnly = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();

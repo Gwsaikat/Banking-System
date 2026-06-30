@@ -12,6 +12,8 @@ import {
   Menu,
   X,
   Shield,
+  Bot,
+  FileText,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -27,6 +29,8 @@ const Sidebar = () => {
     { to: '/accounts', icon: Wallet, label: 'Accounts' },
     { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions' },
     { to: '/loans', icon: Landmark, label: 'Loans' },
+    { to: '/ai-chat', icon: Bot, label: 'Ask Your Money' },
+    { to: '/documents', icon: FileText, label: 'Documents' },
     { to: '/profile', icon: User, label: 'Profile' },
   ];
 

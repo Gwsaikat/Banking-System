@@ -15,6 +15,8 @@ import Profile from './pages/Profile';
 import AdminUsers from './pages/AdminUsers';
 import AdminTransactions from './pages/AdminTransactions';
 import AdminLoans from './pages/AdminLoans';
+import AiChat from './pages/AiChat';
+import Documents from './pages/Documents';
 
 const AppLayout = ({ children }) => {
   return (
@@ -45,6 +47,8 @@ function App() {
           <Route path="/transactions" element={<ProtectedRoute><AppLayout><Transactions /></AppLayout></ProtectedRoute>} />
           <Route path="/loans" element={<ProtectedRoute><AppLayout><Loans /></AppLayout></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
+          <Route path="/ai-chat" element={<ProtectedRoute><AppLayout><AiChat /></AppLayout></ProtectedRoute>} />
+          <Route path="/documents" element={<ProtectedRoute><AppLayout><Documents /></AppLayout></ProtectedRoute>} />
 
           {/* Protected Admin Routes */}
           <Route path="/admin/users" element={<ProtectedRoute adminOnly><AppLayout><AdminUsers /></AppLayout></ProtectedRoute>} />

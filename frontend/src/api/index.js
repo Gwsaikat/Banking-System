@@ -62,4 +62,17 @@ export const approveLoanAPI = (id) => API.put(`/loans/${id}/approve`);
 export const rejectLoanAPI = (id, data) => API.put(`/loans/${id}/reject`, data);
 export const resetDatabaseAPI = () => API.post('/admin/reset');
 
+// ============ AI ============
+export const askAiAPI = (data) => API.post('/ai/ask', data);
+
+// ============ Documents ============
+export const uploadDocumentAPI = (formData) => API.post('/documents/upload', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+export const queryDocumentsAPI = (data) => API.post('/documents/query', data);
+
+// ============ Guardian ============
+export const analyzeGuardianAPI = (data) => API.post('/admin/guardian/analyze', data);
+export const resolveGuardianAPI = (data) => API.post('/admin/guardian/resolve', data);
+
 export default API;
