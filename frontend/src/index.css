@@ -1152,27 +1152,359 @@ select.form-input option {
 /* ========================================
    Responsive overrides
    ======================================== */
-@media (max-width: 640px) {
+
+/* --- Tablet (max-width: 1024px) --- */
+@media (max-width: 1024px) {
   .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .documents-grid {
     grid-template-columns: 1fr;
   }
 
-  .balance-cards {
-    grid-template-columns: 1fr;
+  .ai-chat-suggestions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* --- Mobile (max-width: 768px) --- */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
+    padding-top: 72px;
   }
 
   .page-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.8rem;
+  }
+
+  /* Stats */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 16px;
   }
 
   .stat-value {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
+  }
+
+  .stat-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Balance cards */
+  .balance-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .balance-card {
+    padding: 20px;
   }
 
   .balance-card-amount {
     font-size: 1.5rem;
   }
+
+  /* Cards */
+  .card {
+    padding: 16px;
+  }
+
+  /* Table: make it scrollable horizontally */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+  }
+
+  .txn-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .txn-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Buttons row wrap */
+  .flex-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .btn-sm {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-width: 100%;
+    max-height: 85vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .modal-header {
+    padding: 20px 20px 0;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .modal-footer {
+    padding: 0 20px 20px;
+    flex-direction: column;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Forms */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-input {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  /* Filter row */
+  .card > div[style*="display: flex"][style*="gap: 16px"] {
+    flex-direction: column;
+  }
+
+  /* AI Chat */
+  .ai-chat-page {
+    height: calc(100vh - 72px);
+    padding: 8px;
+  }
+
+  .ai-chat-header {
+    padding: 14px 16px;
+  }
+
+  .ai-chat-title {
+    font-size: 1rem;
+  }
+
+  .ai-chat-avatar-ring {
+    padding: 2px;
+  }
+
+  .ai-chat-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ai-chat-messages {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .ai-chat-bubble {
+    max-width: 85%;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  .ai-chat-suggestions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ai-chat-suggestion-card {
+    padding: 12px 14px;
+    font-size: 0.8rem;
+  }
+
+  .ai-chat-empty-icon-wrapper {
+    width: 80px;
+    height: 80px;
+  }
+
+  .ai-chat-empty-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .ai-chat-empty-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ai-chat-empty h3 {
+    font-size: 1.15rem;
+  }
+
+  .ai-chat-empty p {
+    font-size: 0.82rem;
+  }
+
+  .ai-chat-input-area {
+    padding: 12px 16px 16px;
+  }
+
+  .ai-chat-input-wrapper {
+    padding: 3px 3px 3px 14px;
+  }
+
+  .ai-chat-input {
+    padding: 10px 0;
+    font-size: 0.85rem;
+  }
+
+  .ai-chat-send-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Documents */
+  .documents-page {
+    padding: 16px;
+  }
+
+  .documents-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .documents-dropzone {
+    padding: 28px 16px;
+  }
+
+  .documents-search-form .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Auth */
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  /* Loans */
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Pagination */
+  .btn.btn-secondary.btn-sm {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
 }
+
+/* --- Small Mobile (max-width: 480px) --- */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px;
+    padding-top: 68px;
+  }
+
+  .page-title {
+    font-size: 1.15rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .stat-value {
+    font-size: 1.05rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+  }
+
+  .stat-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .balance-card {
+    padding: 16px;
+  }
+
+  .balance-card-amount {
+    font-size: 1.3rem;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 10px;
+    font-size: 0.72rem;
+  }
+
+  .txn-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ai-chat-bubble {
+    max-width: 90%;
+  }
+
+  .ai-chat-empty h3 {
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .btn-sm {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+}
+
 
 /* ========================================
    Safety Confirmation Modal
@@ -1190,7 +1522,7 @@ select.form-input option {
   animation: modalFadeIn 0.2s ease-out;
 }
 
-.modal-content {
+.modal {
   background: var(--gradient-card);
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: var(--radius-lg);
@@ -1862,17 +2194,4 @@ select.form-input option {
   font-size: 0.85rem;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .ai-chat-suggestions {
-    grid-template-columns: 1fr;
-  }
 
-  .ai-chat-bubble {
-    max-width: 85%;
-  }
-
-  .documents-grid {
-    grid-template-columns: 1fr;
-  }
-}
